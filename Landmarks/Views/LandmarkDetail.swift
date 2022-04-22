@@ -19,7 +19,7 @@ struct LandmarkDetail: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                MapView()
+                MapView(coordinate: landmark.locationCoordinate)
                     .ignoresSafeArea(edges: .top)
                     .frame(height: 300)
                 
@@ -60,6 +60,8 @@ struct LandmarkDetail: View {
                 
             }
         }
+        .navigationTitle(landmark.name)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

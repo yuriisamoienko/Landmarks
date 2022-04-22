@@ -17,17 +17,22 @@ struct LandmarkList: View {
                     LandmarkRow(landmark: landmark)
                 }
             }
+            .foregroundColor(.primary)
+            .navigationTitle("Landmarks")
         }
-        .foregroundColor(.primary)
-        .navigationTitle("Landmarks")
     }
 }
 
 struct LandmarkList_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LandmarkList()
-                .previewDevice("iPhone 8")
+            ForEach(["iPhone 8", "iPhone 12"], id: \.self) { deviceName in
+                LandmarkList()
+                    .previewDevice(PreviewDevice(rawValue: deviceName))
+                    .previewDisplayName(deviceName)
+            }
+//            LandmarkList()
+//                .previewDevice("iPhone 8")
             
             LandmarkList()
                 .preferredColorScheme(.dark)
