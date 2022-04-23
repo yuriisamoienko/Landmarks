@@ -9,8 +9,17 @@ import SwiftUI
 
 struct LandmarkDetail: View {
     
-    // // MARK: Private Constants
+    // MARK: Private Constants
+    
     private let circleTopOffset: CGFloat = -130
+    
+    // MARK: Private Properties
+    
+    @EnvironmentObject private var modelData: ModelData
+    
+    private var landmarkIndex: Int {
+        modelData.landmarks.firstIndex(where: { $0.id == landmark.id })!
+    }
     
     // MARK: Public Properties
     
@@ -33,6 +42,8 @@ struct LandmarkDetail: View {
                             .font(.title)
                         
                         Spacer()
+                        
+                        FavoriteButton(isSet: $modelData.landmarks[landmarkIndex].isFavorite)
                     }
                     
                     HStack {
@@ -66,7 +77,10 @@ struct LandmarkDetail: View {
 }
 
 struct LandmarkDetail_Previews: PreviewProvider {
+    private static let landmarks = ModelData().landmarks
+    
     static var previews: some View {
-        LandmarkDetail(landmark: landmarks[2])
+        LandmarkDetail(landmark: Self.landmarks[3])
+            .environmentObject(ModelData())
     }
 }
