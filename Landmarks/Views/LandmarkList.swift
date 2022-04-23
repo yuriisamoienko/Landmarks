@@ -20,6 +20,7 @@ struct LandmarkList: View {
             .foregroundColor(.primary)
             .navigationTitle("Landmarks")
         }
+        .navigationViewStyle(.stack)
     }
 }
 
