@@ -10,12 +10,36 @@ import UIKit
 
 struct ContentView: View {
     
-    // // MARK: Constants
+    // MARK: Private Properties
+    
+    @State private var selectedTab: Tab = .featured
+    
+    // MARK: Constants
+    
+    // MARK: Types
+    
+    enum Tab {
+        case featured
+        case list
+    }
     
     // MARK: Public Properties
     
     var body: some View {
-        LandmarkList()
+        TabView(selection: $selectedTab) {
+            CategoryHome()
+                .tag(Tab.featured)
+                .tabItem {
+                    Label("Featured", systemImage: "star")
+                }
+            
+            LandmarkList()
+                .tag(Tab.list)
+                .tabItem {
+                    Label("List", systemImage: "list.bullet")
+                }
+        }
+        
     }
     
     // MARK: Public Functions
@@ -29,5 +53,6 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .environmentObject(ModelData())
+            .previewInterfaceOrientation(.portrait)
     }
 }

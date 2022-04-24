@@ -27,12 +27,21 @@ struct Landmark: Hashable, Codable, Identifiable {
             longitude: coordinates.longitude)
     }
     var isFavorite: Bool
+    var isFeatured: Bool
+    
+    var category: Category
     
     // MARK: Types
     
     struct Coordinates: Hashable, Codable {
         var latitude: Double
         var longitude: Double
+    }
+    
+    enum Category: String, CaseIterable, Codable {
+        case lakes = "Lakes"
+        case rivers = "Rivers"
+        case mountains = "Mountains"
     }
     
     // MARK: Private Properties

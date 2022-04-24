@@ -14,6 +14,18 @@ final class ModelData: ObservableObject {
     
     var hikes: [Hike] = loadJson("hikeData.json")
     
+    var categories: [String: [Landmark]] {
+        Dictionary(
+            grouping: landmarks,
+            by: { $0.category.rawValue }
+        )
+    }
+    
+    var features: [Landmark] {
+        landmarks.filter {
+            $0.isFeatured
+        }
+    }
 }
 
 fileprivate func loadJson<T: Decodable>(_ filename: String) -> T {
