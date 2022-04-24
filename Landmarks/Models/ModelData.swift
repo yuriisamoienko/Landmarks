@@ -9,10 +9,14 @@ import Foundation
 import Combine
 
 final class ModelData: ObservableObject {
-    @Published var landmarks: [Landmark] = load("landmarkData.json")
+    
+    @Published var landmarks: [Landmark] = loadJson("landmarkData.json")
+    
+    var hikes: [Hike] = loadJson("hikeData.json")
+    
 }
 
-func load<T: Decodable>(_ filename: String) -> T {
+fileprivate func loadJson<T: Decodable>(_ filename: String) -> T {
     let data: Data
 
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
