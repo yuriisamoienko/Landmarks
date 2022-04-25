@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HikeView: View {
     var hike: Hike
-    @State private var showDetail = true
+    @State private var showDetail = false
 
     var body: some View {
         VStack {

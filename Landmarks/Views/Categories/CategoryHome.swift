@@ -13,6 +13,7 @@ struct CategoryHome: View {
     // MARK: Private Properties
     
     @EnvironmentObject private var modelData: ModelData
+    @State private var showingProfile = false
     
     // MARK: Public Properties
     
@@ -35,7 +36,19 @@ struct CategoryHome: View {
                 }
                 .listRowInsets(EdgeInsets())
             }
+            .listStyle(.inset)
             .navigationTitle("Featured")
+            .toolbar {
+                Button {
+                    showingProfile.toggle()
+                } label: {
+                    Label("User Profile", systemImage: "person.crop.circle")
+                }
+            }
+            .sheet(isPresented: $showingProfile) {
+                ProfileHost()
+                    .environmentObject(modelData)
+            }
         }
         .navigationViewStyle(.stack) // fixes "unable sutisfy constraints"
     }
