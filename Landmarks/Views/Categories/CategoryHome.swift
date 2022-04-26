@@ -20,13 +20,10 @@ struct CategoryHome: View {
     var body: some View {
         NavigationView {
             List {
-                let featured = modelData.features[0]
+                let pages = ModelData().features.map { FeatureCard(landmark: $0) }
                 
-                featured.image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 200)
-                    .clipped()
+                PageView(pages: pages)
+                    .aspectRatio(3 / 2, contentMode: .fit)
                     .listRowInsets(EdgeInsets())
                 
                 
