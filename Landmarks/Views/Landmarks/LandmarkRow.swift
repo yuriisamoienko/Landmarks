@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUiExtension
 
 struct LandmarkRow: View {
     
@@ -18,8 +19,19 @@ struct LandmarkRow: View {
             landmark.image
                 .resizable()
                 .frame(width: 50, height: 50)
+                .cornerRadius(5)
             
-            Text(landmark.name)
+            if isMacOS == true {
+                VStack(alignment: .leading) {
+                    Text(landmark.name)
+                        .bold()
+                    Text(landmark.park)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            } else {
+                Text(landmark.name)
+            }
             
             Spacer()
             
@@ -27,6 +39,9 @@ struct LandmarkRow: View {
                 Image(systemName: "star.fill")
                     .foregroundColor(.yellow)
             }
+        }
+        .if(isMacOS) { $0
+            .padding(.vertical, 4)
         }
     }
 }

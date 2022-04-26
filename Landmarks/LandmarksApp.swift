@@ -27,3 +27,6 @@ struct LandmarksApp: App {
         #endif
     }
 }
+
+// MARK: Global constants
+let isMacOS = DeviceInfo().systemPlatform == .macOS

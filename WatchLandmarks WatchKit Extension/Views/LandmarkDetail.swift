@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUiExtension_WatchOS
+import SwiftUiExtension
 
 struct LandmarkDetail: View {
     

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUiExtension
 
 struct LandmarkList: View {
     
@@ -24,7 +25,7 @@ struct LandmarkList: View {
     // MARK: Public Properties
     
     var body: some View {
-        NavigationView {
+        let navigationView = NavigationView {
             List {
                 Toggle("Favorites Only", isOn: $showFavoritesOnly)
                 
@@ -38,8 +39,15 @@ struct LandmarkList: View {
                 .foregroundColor(.primary)
                 .navigationTitle("Landmarks")
             }
+            .if(isMacOS) { $0
+                .frame(minWidth: 300)
+            }
         }
-        .navigationViewStyle(.stack)
+#if os(OSX)
+        return navigationView
+#else
+        return navigationView.navigationViewStyle(.stack)
+#endif
     }
 }
 
@@ -49,3 +57,6 @@ struct LandmarkList_Previews: PreviewProvider {
             .environmentObject(ModelData())
     }
 }
+
+
+
