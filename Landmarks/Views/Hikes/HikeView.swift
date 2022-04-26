@@ -6,6 +6,7 @@ A view displaying information about a hike, including an elevation graph.
 */
 
 import SwiftUI
+import SwiftUiExtension
 
 struct HikeView: View {
     var hike: Hike
