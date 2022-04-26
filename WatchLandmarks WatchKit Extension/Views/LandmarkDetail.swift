@@ -23,8 +23,38 @@ struct LandmarkDetail: View {
     var landmark: Landmark
     
     var body: some View {
-        CircleView(image: landmark.image.resizable())
-            .scaledToFill()
+        ScrollView {
+            VStack {
+                CircleView(image: landmark.image.resizable())
+                    .scaledToFit()
+                
+                Text(landmark.name)
+                    .font(.headline)
+                    .lineLimit(0)
+                
+                Toggle(isOn: $modelData.landmarks[landmarkIndex].isFavorite) {
+                    Text("Favoritie")
+                }
+                
+                Divider()
+                
+                Text(landmark.park)
+                    .font(.caption)
+                    .bold()
+//                    .lineLimit(0)
+                
+                Text(landmark.state)
+                    .font(.caption)
+                
+                Divider()
+                
+                MapView(coordinate: landmark.locationCoordinate)
+                    .scaledToFit()
+                    .disabled(true)
+            }
+            .padding(16)
+        }
+        .navigationTitle("Landmarks")
     }
 }
 
@@ -34,20 +64,18 @@ struct LandmarkDetail_Previews: PreviewProvider {
     
     static var previews: some View {
         let modelData = ModelData()
-        let landmark = modelData.landmarks[2]
+        let landmark = modelData.landmarks[0]
         
         return Group {
             LandmarkDetail(landmark: landmark)
-                .environmentObject(modelData)
             
             LandmarkDetail(landmark: landmark)
-                .environmentObject(modelData)
                 .preview(device: .AppleWatchSeries5_44mm)
             
             LandmarkDetail(landmark: landmark)
-                .environmentObject(modelData)
                 .preview(device: .AppleWatchSeries5_40mm)
         }
+        .environmentObject(modelData)
     }
 }
 

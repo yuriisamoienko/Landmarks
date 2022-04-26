@@ -413,10 +413,9 @@
 		5A9E99752817DF2500834E0E /* WatchLandmarks WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				5AEA817A281826A2009055F4 /* Notification */,
 				5A9E999E2817E19500834E0E /* Views */,
 				5A9E99782817DF2500834E0E /* ContentView.swift */,
-				5A9E997A2817DF2500834E0E /* NotificationController.swift */,
-				5A9E997C2817DF2500834E0E /* NotificationView.swift */,
 				5A9E997E2817DF2500834E0E /* ComplicationController.swift */,
 				5A9E99802817DF2600834E0E /* Assets.xcassets */,
 				5A9E99852817DF2600834E0E /* Info.plist */,
@@ -449,6 +448,15 @@
 				5AEA8174281810AD009055F4 /* SwiftUiExtension_WatchOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5AEA817A281826A2009055F4 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				5A9E997A2817DF2500834E0E /* NotificationController.swift */,
+				5A9E997C2817DF2500834E0E /* NotificationView.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
