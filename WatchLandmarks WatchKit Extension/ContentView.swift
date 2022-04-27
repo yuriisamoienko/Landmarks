@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+// watch
 struct ContentView: View {
+    
+    @State private var showFavoritesOnly = false
+    
     var body: some View {
-        LandmarkList()
+        LandmarkList(
+            showFavoritesOnly: $showFavoritesOnly,
+            listBeginAppend: .init(Toggle("Favorites Only", isOn: $showFavoritesOnly))
+        )
     }
 }
 

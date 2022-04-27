@@ -8,10 +8,11 @@
 import SwiftUI
 import UIKit
 
+// IOS
 struct ContentView: View {
     
     // MARK: Private Properties
-    
+    @State private var showFavoritesOnly = false
     @State private var selectedTab: Tab = .featured
     
     // MARK: Constants
@@ -33,7 +34,10 @@ struct ContentView: View {
                     Label("Featured", systemImage: "star")
                 }
             
-            LandmarkList()
+            LandmarkList(
+                showFavoritesOnly: $showFavoritesOnly,
+                listBeginAppend: .init(Toggle("Favorites Only", isOn: $showFavoritesOnly))
+            )
                 .tag(Tab.list)
                 .tabItem {
                     Label("List", systemImage: "list.bullet")

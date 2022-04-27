@@ -14,8 +14,6 @@ struct LandmarkList: View {
     
     @EnvironmentObject private var modelData: ModelData
     
-    @State private var showFavoritesOnly = false
-    
     private var filteredLandmarks: [Landmark] {
         modelData.landmarks.filter { landmark in
             showFavoritesOnly == false || landmark.isFavorite
@@ -24,10 +22,16 @@ struct LandmarkList: View {
     
     // MARK: Public Properties
     
+    // for platrform specific staff, to avoid preprocessor macroses
+    var listBeginAppend: AnyView?
+    var listModifier: ViewClosureModifier.Effect?
+    
+    @Binding var showFavoritesOnly: Bool
+    
     var body: some View {
         let navigationView = NavigationView {
             List {
-                Toggle("Favorites Only", isOn: $showFavoritesOnly)
+                listBeginAppend?.doNothing()
                 
                 ForEach(filteredLandmarks) { landmark in
                     NavigationLink {
@@ -39,19 +43,40 @@ struct LandmarkList: View {
                 .foregroundColor(.primary)
                 .navigationTitle("Landmarks")
             }
-            .if(isMacOS) { $0
-                .frame(minWidth: 300)
-            }
+            .modifier(listModifier)
+//            .if(isMacOS) { $0
+//                .frame(minWidth: 300)
+//                .toolbar {
+//                    ToolbarItem {
+////                        Menu {
+////                            Toggle(isOn: $showFavoritesOnly) {
+////                                Label("Favorites only", systemImage: "star.fill")
+////                            }
+////                        } label: {
+////                            Label("Filter", systemImage: "slider.horizontal.3")
+////                        }
+//                    }
+//                }
+//            }
         }
-#if os(OSX)
-        return navigationView
+#if os(iOS)
+        return navigationView //.navigationViewStyle(.stack)
 #else
-        return navigationView.navigationViewStyle(.stack)
+        return navigationView
 #endif
+    }
+    
+    // MARK: Public Functions
+    
+    init(showFavoritesOnly val: Binding<Bool> = .constant(false), listBeginAppend: AnyView? = nil, listModifier: ViewClosureModifier.Effect? = nil) {
+        self.listBeginAppend = listBeginAppend
+        self.listModifier = listModifier
+        self._showFavoritesOnly = val
     }
 }
 
 struct LandmarkList_Previews: PreviewProvider {
+    
     static var previews: some View {
         LandmarkList()
             .environmentObject(ModelData())
