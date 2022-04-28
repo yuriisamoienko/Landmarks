@@ -10,13 +10,24 @@ import SwiftUiExtension
 
 struct LandmarkList: View {
     
-    // MARK: Private Properties
     
+    enum FilterCategory: String, CaseIterable, Identifiable {
+        case all = "All"
+        case lakes = "Lakes"
+        case rivers = "Rivers"
+        case mountains = "Mountains"
+
+        var id: FilterCategory { self }
+    }
+    
+    // MARK: Private Properties
     @EnvironmentObject private var modelData: ModelData
+    @State private var selectedLandmark: Landmark?
     
     private var filteredLandmarks: [Landmark] {
         modelData.landmarks.filter { landmark in
-            showFavoritesOnly == false || landmark.isFavorite
+            (showFavoritesOnly == false || landmark.isFavorite)
+            && (filter == .all || filter.rawValue == landmark.category.rawValue)
         }
     }
     
@@ -25,12 +36,24 @@ struct LandmarkList: View {
     // for platrform specific staff, to avoid preprocessor macroses
     var listBeginAppend: AnyView?
     var listModifier: ViewClosureModifier.Effect?
+    var navigationViewEndAppend: AnyView?
+    
+    var title: String {
+        let title = filter == .all ? "Landmarks" : filter.rawValue
+        return showFavoritesOnly ? "Favorite \(title)" : title
+    }
+    var index: Int? {
+        modelData.landmarks.firstIndex(where: { $0.id == selectedLandmark?.id })
+    }
+
     
     @Binding var showFavoritesOnly: Bool
+    @Binding var filter: FilterCategory
+    
     
     var body: some View {
-        let navigationView = NavigationView {
-            List {
+        NavigationView {
+            List(selection: $selectedLandmark) {
                 listBeginAppend?.doNothing()
                 
                 ForEach(filteredLandmarks) { landmark in
@@ -39,39 +62,32 @@ struct LandmarkList: View {
                     } label: {
                         LandmarkRow(landmark: landmark)
                     }
+                    .tag(landmark)
                 }
                 .foregroundColor(.primary)
-                .navigationTitle("Landmarks")
             }
+            .navigationTitle(title)
             .modifier(listModifier)
-//            .if(isMacOS) { $0
-//                .frame(minWidth: 300)
-//                .toolbar {
-//                    ToolbarItem {
-////                        Menu {
-////                            Toggle(isOn: $showFavoritesOnly) {
-////                                Label("Favorites only", systemImage: "star.fill")
-////                            }
-////                        } label: {
-////                            Label("Filter", systemImage: "slider.horizontal.3")
-////                        }
-//                    }
-//                }
-//            }
+            
+            navigationViewEndAppend?.doNothing()
         }
-#if os(iOS)
-        return navigationView //.navigationViewStyle(.stack)
-#else
-        return navigationView
-#endif
+        .focusedValue(\.selectedLandmark, $modelData.landmarks[index ?? 0])
     }
     
     // MARK: Public Functions
     
-    init(showFavoritesOnly val: Binding<Bool> = .constant(false), listBeginAppend: AnyView? = nil, listModifier: ViewClosureModifier.Effect? = nil) {
+    init(
+        showFavoritesOnly: Binding<Bool> = .constant(false),
+        filter: Binding<FilterCategory> = .constant(.all),
+        listBeginAppend: AnyView? = nil,
+        listModifier: ViewClosureModifier.Effect? = nil,
+        navigationViewEndAppend: AnyView? = nil
+    ) {
         self.listBeginAppend = listBeginAppend
         self.listModifier = listModifier
-        self._showFavoritesOnly = val
+        self.navigationViewEndAppend = navigationViewEndAppend
+        self._showFavoritesOnly = showFavoritesOnly
+        self._filter = filter
     }
 }
 

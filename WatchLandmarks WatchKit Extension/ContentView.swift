@@ -15,7 +15,9 @@ struct ContentView: View {
     var body: some View {
         LandmarkList(
             showFavoritesOnly: $showFavoritesOnly,
-            listBeginAppend: .init(Toggle("Favorites Only", isOn: $showFavoritesOnly))
+            listBeginAppend: {
+                Toggle("Favorites Only", isOn: $showFavoritesOnly).toAnyView()
+            }()
         )
     }
 }
